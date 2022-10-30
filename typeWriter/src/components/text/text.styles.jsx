@@ -1,4 +1,8 @@
-import styled from 'styled-components'
+import styled from "styled-components";
+
+export const Word = styled.span`
+  color: ${props => props.color};
+`;
 
 export const Heading = styled.div`
   text-align: center;
@@ -11,7 +15,7 @@ export const Heading = styled.div`
   /* or 51px */
 
   color: #000000;
-`
+`;
 
 export const Text = styled.div`
   width: 50%;
@@ -27,7 +31,7 @@ export const Text = styled.div`
   /* or 24px */
 
   color: #000000;
-`
+`;
 
 export const TextArea = styled.textarea`
   box-sizing: border-box;
@@ -44,8 +48,7 @@ export const TextArea = styled.textarea`
 
   background: #ffffff;
   border: 5px solid #000000;
-  
-`
+`;
 
 export const Button = styled.div`
   /* Auto layout */
@@ -65,4 +68,4 @@ export const Button = styled.div`
   height: 22px;
 
   background: #149bfc;
-`
+`;
