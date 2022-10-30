@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, Heading, TextArea, Button } from './text.styles'
+import { Word, Text, Heading, TextArea, Button } from './text.styles'
 import englishWords from 'an-array-of-english-words'
 
 const TypingText = () => {
@@ -11,9 +11,10 @@ const TypingText = () => {
 
   const randomToggleFormat = word => {
     return Math.floor(Math.random() * 2) === 0
-      ? word[0].toUpperCase() + word.substring(1)
-      : word
+      ? { word: word[0].toUpperCase() + word.substring(1), isCorrect: null }
+      : { word: word, color: 'black' }
   }
+
   const randomWordGenerator = () => {
     return randomToggleFormat(
       englishWords[Math.floor(Math.random() * englishWords.length)]
@@ -22,14 +23,14 @@ const TypingText = () => {
 
   const randomwordsGenerator = () => {
     let randomWords = []
-    let n = 1
+
     while (randomWords.length < 50) {
       randomWords.push(randomWordGenerator())
     }
     return randomWords
   }
 
-  //TODO: Optimise it.
+  //TODO: Optimise it
   useEffect(() => {
     if (currentWordIndex > 49) {
       setWords(randomwordsGenerator())
@@ -49,39 +50,48 @@ const TypingText = () => {
     }
   }
 
-  //TODO:handle the case of pressing enter button or other button cases
+  const checkWordCorrect = () => {
+    let cw
+    if (currentWordIndex <= 0) {
+      cw = Object.values(words)[0]?.word
+    } else {
+      console.log(Object.values(words))
+      cw = Object.values(words)[currentWordIndex - 1]?.word
+    }
+
+    if (currentWordIndex) {
+      let index
+      if (currentWordIndex <= 0) {
+        index = 0
+      } else {
+        index = currentWordIndex - 1
+      }
+      let thisWord = words[index]
+      return thisWord.word === currentWord
+        ? (thisWord.color = 'green')
+        : (thisWord.color = 'red')
+    }
+  }
+  console.log(currentWord, checkWordCorrect())
+
   const handleKeyPress = e => {
-    const letter = e.key
     if (e.key === ' ') {
       const arr = input.split(' ')
       setCurrentWord(arr[arr.length - 1])
       setCurrentWordIndex(prev => prev + 1)
-      checkWords()
-    } else if (/^[a-zA-Z]+$/.test(e.key)) {
     }
-  }
-
-  // console.log(currentWord, currentWordIndex)
-  // console.log(currentWord === words[currentWordIndex - 1])
-
-  const checkWords = () => {
-    //console.log('It worked', currentWord === words[currentWordIndex - 1])
-
-    if (currentWord === words[currentWordIndex - 1]) {
-      // change the color of words[currentWordIndex]
-      // setWords(prev => (prev[currentWordIndex - 1] = 'correct'))
-      const temp = words;
-      temp[currentWordIndex - 1] = 'correct';
-      console.log(temp)
-      console.log(words)
-    } else {
-      //replaced = input.replace(currentWord, 'incorrect')
-    }
+    // else if (/^[a-zA-Z]+$/.test(e.key)) {
+    //   // setCurrentWord((prev) => prev + '' + letter);
+    //   setCurrentWord((prev) => prev + '' + letter);
+    // }
   }
 
   const handleKeyDown = e => {
-    if (e.keyCode === 8 || e.keyCode === 46) {
+    if (e.keyCode === 8 || e.keyCode === 46 || e.keyCode === 13) {
       e.preventDefault()
+      return
+    } else {
+      handleKeyPress(e)
     }
   }
 
@@ -92,12 +102,20 @@ const TypingText = () => {
   return (
     <>
       <Heading>Typing Practice</Heading>
-      <Text>{words.length > 0 && words.join(' ')}</Text>
+      <Text>
+        {words.map((W, i) => (
+          <Word color={W.color} key={i}>
+            {W.word}{' '}
+          </Word>
+        ))}
+      </Text>
+
+      {/* <Text>{words.length > 0 && words.join(" ")}</Text> */}
       <TextArea
         value={input}
         onChange={handleChange}
         readOnly={!isStarted}
-        onKeyPress={handleKeyPress}
+        // onKeyPress={handleKeyPress}
         onKeyDown={handleKeyDown}
       />
       <Button onClick={handlePractice}>
@@ -109,9 +127,9 @@ const TypingText = () => {
   )
 }
 
-export default TypingText;
+export default TypingText
 
 // if (randomWords.length === n * 10 - 1) {
-//   randomWords.push('⏎')
+//   randomWords.push('')
 //   n++
 // }
