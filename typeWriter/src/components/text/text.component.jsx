@@ -29,7 +29,7 @@ const TypingText = () => {
     return randomWords
   }
 
-  //TODO: Optimise it
+  //TODO: Optimise it.
   useEffect(() => {
     if (currentWordIndex > 49) {
       setWords(randomwordsGenerator())
@@ -49,19 +49,35 @@ const TypingText = () => {
     }
   }
 
+  //TODO:handle the case of pressing enter button or other button cases
   const handleKeyPress = e => {
     const letter = e.key
     if (e.key === ' ') {
       const arr = input.split(' ')
       setCurrentWord(arr[arr.length - 1])
       setCurrentWordIndex(prev => prev + 1)
+      checkWords()
     } else if (/^[a-zA-Z]+$/.test(e.key)) {
-      setCurrentWord(prev => prev + letter)
     }
   }
 
-  console.log(currentWord, currentWordIndex)
-  console.log(currentWord === words[currentWordIndex])
+  // console.log(currentWord, currentWordIndex)
+  // console.log(currentWord === words[currentWordIndex - 1])
+
+  const checkWords = () => {
+    //console.log('It worked', currentWord === words[currentWordIndex - 1])
+
+    if (currentWord === words[currentWordIndex - 1]) {
+      // change the color of words[currentWordIndex]
+      // setWords(prev => (prev[currentWordIndex - 1] = 'correct'))
+      const temp = words;
+      temp[currentWordIndex - 1] = 'correct';
+      console.log(temp)
+      console.log(words)
+    } else {
+      //replaced = input.replace(currentWord, 'incorrect')
+    }
+  }
 
   const handleKeyDown = e => {
     if (e.keyCode === 8 || e.keyCode === 46) {
@@ -69,7 +85,7 @@ const TypingText = () => {
     }
   }
 
-  const handleChange = (event, newValue, reason) => {
+  const handleChange = event => {
     setInput(event.target.value)
   }
 
@@ -93,7 +109,7 @@ const TypingText = () => {
   )
 }
 
-export default TypingText
+export default TypingText;
 
 // if (randomWords.length === n * 10 - 1) {
 //   randomWords.push('⏎')
