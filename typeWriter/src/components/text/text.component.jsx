@@ -6,12 +6,11 @@ const TypingText = () => {
   const [words, setWords] = useState([]);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isStarted, setIsStarted] = useState(false);
-  const [currentWord, setCurrentWord] = useState("");
   const [input, setInput] = useState("");
 
   const randomToggleFormat = (word) => {
     return Math.floor(Math.random() * 2) === 0
-      ? { word: word[0].toUpperCase() + word.substring(1), isCorrect: null }
+      ? { word: word[0].toUpperCase() + word.substring(1)}
       : { word: word, color: "black" };
   };
 
@@ -34,6 +33,7 @@ const TypingText = () => {
   useEffect(() => {
     if (currentWordIndex > 49) {
       setWords(randomwordsGenerator());
+      setCurrentWord('')
       setCurrentWordIndex(0);
     }
   }, [currentWordIndex, randomwordsGenerator, setWords, setCurrentWordIndex]);
@@ -49,53 +49,32 @@ const TypingText = () => {
       setInput("");
     }
   };
-
-
-  const checkWordCorrect = () => {
-    let cw;
-    if (currentWordIndex <= 0) {
-      cw = Object.values(words)[0]?.word;
-    } else {
-      console.log(Object.values(words));
-      cw = Object.values(words)[currentWordIndex - 1]?.word;
+  const currentWordInput = async () => {
+    let oneWord =input.split(' ');
+    let word = ''
+    oneWord.length> 1 ? 
+    word = oneWord[oneWord.length-1] : word= oneWord.join(' ');
+    if(word === words[currentWordIndex].word){
+      words[currentWordIndex].color = 'green;'
+      setCurrentWordIndex(prev=> prev+1)
     }
-
-    if(currentWordIndex){
-      let index;
-      if(currentWordIndex<=0){
-        index = 0;
-      } else{
-        index = currentWordIndex-1;
-      }
-      let thisWord = words[index];
-      return thisWord.word === currentWord ? thisWord.color = 'green' : thisWord.color = 'red';
+    else{
+      words[currentWordIndex].color = 'red;'
+      setCurrentWordIndex(prev=> prev+1)
     }
-  };
-  console.log(currentWord, checkWordCorrect());
-
-  const handleKeyPress = (e) => {
-    if (e.key === " ") {
-      const arr = input.split(" ");
-      setCurrentWord(arr[arr.length - 1]);
-      setCurrentWordIndex((prev) => prev + 1);
-    }
-    // else if (/^[a-zA-Z]+$/.test(e.key)) {
-    //   // setCurrentWord((prev) => prev + '' + letter);
-    //   setCurrentWord((prev) => prev + '' + letter);
-    // }
-  };
+  }
 
   const handleKeyDown = (e) => {
+    console.log(e.keyCode)
     if (e.keyCode === 8 || e.keyCode === 46 || e.keyCode === 13) {
       e.preventDefault();
       return;
-    } else {
-      handleKeyPress(e);
+    } else if (e.keyCode === 32 && input.length>0) {
+      setInput(prev=> prev+ ' ');
+      currentWordInput()
+    } else if (e.keyCode >=65 && e.keyCode<=90){
+      setInput(prev=> prev+e.key)
     }
-  };
-
-  const handleChange = (event) => {
-    setInput(event.target.value);
   };
 
   return (
@@ -111,10 +90,7 @@ const TypingText = () => {
 
       {/* <Text>{words.length > 0 && words.join(" ")}</Text> */}
       <TextArea
-        value={input}
-        onChange={handleChange}
         readOnly={!isStarted}
-        // onKeyPress={handleKeyPress}
         onKeyDown={handleKeyDown}
       />
       <Button onClick={handlePractice}>
