@@ -53,6 +53,13 @@ textarea{
     color: #000000;
 }
 
+.score-section{
+    display: flex;
+    gap: 2rem;
+    margin:auto;
+    justify-content: center;
+}
+
 .neutralText{
     color: #000;
 }

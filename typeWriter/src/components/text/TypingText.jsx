@@ -8,8 +8,9 @@ const TypingText = () => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isStarted, setIsStarted] = useState(false);
   const [input, setInput] = useState("");
-  const [counter, setCounter] = useState(5)
-
+  const [counter, setCounter] = useState(60)
+  const [error, setError] = useState(0)
+  const [correct, setCorrect] = useState(0)
 
   //random word generation for text typing section
   const randomToggleFormat = (word) => {
@@ -54,7 +55,7 @@ const TypingText = () => {
     setIsStarted(false);
     setInput('');
     setWords([])
-    setCounter(6)
+    setCounter(60)
   }
 
   //check if currect typed word (set by index), matches the same word at that index in the display text the user is trying to copy.
@@ -66,10 +67,12 @@ const TypingText = () => {
     if(word === words[currentWordIndex].word){
       words[currentWordIndex].color = 'correctText'
       setCurrentWordIndex(prev=> prev+1)
+      setCorrect(prev=> prev+1)
     }
     else{
       words[currentWordIndex].color = 'errorText'
       setCurrentWordIndex(prev=> prev+1)
+      setError(prev=> prev+1)
     }
   }
 
@@ -99,9 +102,13 @@ const TypingText = () => {
     }, [isStarted, counter])
 
   return (
-    <>
+    <div>
       <h1 className="heading">Typing Practice</h1>
-      <span>Counter {counter}</span>
+      <div className="score-section">
+        <div><span>Counter {counter}</span></div>
+        <div><span>Errors {error}</span></div>
+        <div><span>Correct {correct}</span></div>
+      </div>
       <div className="displayTextToCopy">
         {words.map((W, i) => (
           <span className={W.color} key={i}>
@@ -120,7 +127,7 @@ const TypingText = () => {
       <button onClick={stopType}>Stop Practice</button>}
 
       <h2 className="heading">Report (Will be addded) </h2>
-    </>
+    </div>
   );
 };
 
