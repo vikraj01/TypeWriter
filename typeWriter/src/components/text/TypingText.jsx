@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import '../text/text.css'
 import englishWords from "an-array-of-english-words";
-import { Button } from "../navigation/navbar.styles";
 
 const TypingText = () => {
   const [words, setWords] = useState([]);

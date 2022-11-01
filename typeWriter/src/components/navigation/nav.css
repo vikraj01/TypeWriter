@@ -1,0 +1,53 @@
+.navContainer{
+    height: 84px;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.logo{
+    margin-right: auto;
+    margin-left: .5rem;
+}
+
+.linkSection{
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.linkSection *{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    text-transform: capitalize;
+    cursor: pointer;
+    color: #000;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    text-decoration: none;
+
+}
+
+.btn{
+    background: #149bfc;
+    margin-left: auto;
+    margin-right: .5rem;
+    border-radius: .5rem;
+    cursor: pointer;
+    padding: .5rem 1rem;
+    cursor: pointer;
+    background: #149bfc;
+    text-decoration: none;
+    color: #000;
+}
+
+.btn>span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

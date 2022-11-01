@@ -1,16 +1,17 @@
 import { useState } from 'react'
-import Navbar from './components/navigation/navbar.component';
+import Navbar from './components/navigation/Navbar';
 import TypingText from './components/text/TypingText';
-
-import Home from './pages/home/home.page';
+import { BrowserRouter as Router } from 'react-router-dom'
 
 function App() {
 
   return (
-    <>
-      <Navbar/>
-      <TypingText/>
-    </>
+    <div>
+      <Router>
+        <Navbar/>
+        <TypingText/>
+      </Router>
+    </div>
   )
 }
 

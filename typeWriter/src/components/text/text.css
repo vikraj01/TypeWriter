@@ -7,6 +7,8 @@ button {
     padding: 14px 32px;
     gap: 10px;
     text-align: center;
+    border-radius: .5rem;
+    border: 1px solid rgba(0, 0, 0, 0.644);
     margin-top: 50px;
     cursor: pointer;
     background: #149bfc;
