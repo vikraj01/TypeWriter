@@ -8,6 +8,7 @@ const TypingText = () => {
   const [isStarted, setIsStarted] = useState(false);
   const [input, setInput] = useState("");
 
+  //random word generation for text typing section
   const randomToggleFormat = (word) => {
     return Math.floor(Math.random() * 2) === 0
       ? { word: word[0].toUpperCase() + word.substring(1)}
@@ -38,6 +39,7 @@ const TypingText = () => {
     }
   }, [currentWordIndex, randomwordsGenerator, setWords, setCurrentWordIndex]);
 
+  //setting the practice to start
   const handlePractice = () => {
     if (!isStarted) {
       let randomWords = randomwordsGenerator();
@@ -45,10 +47,13 @@ const TypingText = () => {
       setIsStarted(true);
     } else {
       setIsStarted(false);
-      setWords([]);
-      setInput("");
+      setInput('')
+      setWords([])
     }
   };
+
+
+  //check if currect typed word (set by index), matches the same word at that index in the display text the user is trying to copy.
   const currentWordInput = async () => {
     let oneWord =input.split(' ');
     let word = ''
@@ -64,6 +69,7 @@ const TypingText = () => {
     }
   }
 
+  //handling the key presses, ignoring enters and deletes, processes spaces to trigger a wordCheck
   const handleKeyDown = (e) => {
     if (e.keyCode === 8 || e.keyCode === 46 || e.keyCode === 13) {
       e.preventDefault();
@@ -75,6 +81,7 @@ const TypingText = () => {
       setInput(prev=> prev+e.key)
     }
   };
+
 
   return (
     <>
