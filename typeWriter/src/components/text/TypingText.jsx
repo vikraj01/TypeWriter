@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import '../text/text.css'
 import englishWords from "an-array-of-english-words";
+import { Button } from "../navigation/navbar.styles";
 
 const TypingText = () => {
   const [words, setWords] = useState([]);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isStarted, setIsStarted] = useState(false);
   const [input, setInput] = useState("");
+  const [counter, setCounter] = useState(5)
+
 
   //random word generation for text typing section
   const randomToggleFormat = (word) => {
@@ -39,19 +42,20 @@ const TypingText = () => {
     }
   }, [currentWordIndex, randomwordsGenerator, setWords, setCurrentWordIndex]);
 
-  //setting the practice to start
-  const handlePractice = () => {
-    if (!isStarted) {
-      let randomWords = randomwordsGenerator();
-      setWords(randomWords);
-      setIsStarted(true);
-    } else {
-      setIsStarted(false);
-      setInput('')
-      setWords([])
-    }
-  };
+  //startgame function
+  const startType = () => {
+    let randomWords = randomwordsGenerator();
+    setWords(randomWords);
+    setIsStarted(true);
+  }
 
+  //stopgame function
+  const stopType = () =>{
+    setIsStarted(false);
+    setInput('');
+    setWords([])
+    setCounter(6)
+  }
 
   //check if currect typed word (set by index), matches the same word at that index in the display text the user is trying to copy.
   const currentWordInput = async () => {
@@ -82,10 +86,22 @@ const TypingText = () => {
     }
   };
 
+  //start counter when practice is live if counter gets to zero refresh the game back to start
+  useEffect(() => {
+    if(counter<=0) stopType();
+    if(isStarted && counter>0){
+        console.log(counter)
+        const timeInterval = setInterval(()=>{
+          setCounter(prevTime=> prevTime-1);
+        }, 1000);
+      return ()=> clearInterval(timeInterval);
+      }
+    }, [isStarted, counter])
 
   return (
     <>
       <h1 className="heading">Typing Practice</h1>
+      <span>Counter {counter}</span>
       <div className="displayTextToCopy">
         {words.map((W, i) => (
           <span className={W.color} key={i}>
@@ -99,11 +115,11 @@ const TypingText = () => {
         readOnly={!isStarted}
         onKeyDown={handleKeyDown}
       />
-      <button onClick={handlePractice}>
-        {isStarted ? "Stop Practice" : "Start Practice"}
-      </button>
+      {isStarted===false? 
+      <button onClick={startType}>Start Practice</button> :
+      <button onClick={stopType}>Stop Practice</button>}
 
-      <h2 className="heading">Report (Will be addded ) </h2>
+      <h2 className="heading">Report (Will be addded) </h2>
     </>
   );
 };
