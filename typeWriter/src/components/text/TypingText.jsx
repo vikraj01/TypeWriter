@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { Word, Text, Heading, TextArea, Button } from "./text.styles";
 import '../text/text.css'
 import englishWords from "an-array-of-english-words";
 
