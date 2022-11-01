@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Word, Text, Heading, TextArea, Button } from "./text.styles";
+// import { Word, Text, Heading, TextArea, Button } from "./text.styles";
+import '../text/text.css'
 import englishWords from "an-array-of-english-words";
 
 const TypingText = () => {
@@ -11,7 +12,7 @@ const TypingText = () => {
   const randomToggleFormat = (word) => {
     return Math.floor(Math.random() * 2) === 0
       ? { word: word[0].toUpperCase() + word.substring(1)}
-      : { word: word, color: "black" };
+      : { word: word, color: "neutralText" };
   };
 
   const randomWordGenerator = () => {
@@ -55,17 +56,16 @@ const TypingText = () => {
     oneWord.length> 1 ? 
     word = oneWord[oneWord.length-1] : word= oneWord.join(' ');
     if(word === words[currentWordIndex].word){
-      words[currentWordIndex].color = 'green;'
+      words[currentWordIndex].color = 'correctText'
       setCurrentWordIndex(prev=> prev+1)
     }
     else{
-      words[currentWordIndex].color = 'red;'
+      words[currentWordIndex].color = 'errorText'
       setCurrentWordIndex(prev=> prev+1)
     }
   }
 
   const handleKeyDown = (e) => {
-    console.log(e.keyCode)
     if (e.keyCode === 8 || e.keyCode === 46 || e.keyCode === 13) {
       e.preventDefault();
       return;
@@ -79,32 +79,27 @@ const TypingText = () => {
 
   return (
     <>
-      <Heading>Typing Practice</Heading>
-      <Text>
+      <h1 className="heading">Typing Practice</h1>
+      <div className="displayTextToCopy">
         {words.map((W, i) => (
-          <Word color={W.color} key={i}>
-            {W.word}{" "}
-          </Word>
+          <span className={W.color} key={i}>
+            {W.word}{' '}
+          </span>
         ))}
-      </Text>
+      </div>
 
       {/* <Text>{words.length > 0 && words.join(" ")}</Text> */}
-      <TextArea
+      <textarea
         readOnly={!isStarted}
         onKeyDown={handleKeyDown}
       />
-      <Button onClick={handlePractice}>
+      <button onClick={handlePractice}>
         {isStarted ? "Stop Practice" : "Start Practice"}
-      </Button>
+      </button>
 
-      <Heading>Report (Will be addded ) </Heading>
+      <h2 className="heading">Report (Will be addded ) </h2>
     </>
   );
 };
 
 export default TypingText;
-
-// if (randomWords.length === n * 10 - 1) {
-//   randomWords.push('')
-//   n++
-// }
